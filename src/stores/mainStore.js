@@ -27,7 +27,8 @@ export const useMainStore = defineStore('main', {
   actions: {
     onSelected(id) {
       if (this.checkboxesArray.includes(id)) {
-        this.checkboxesArray = this.checkboxesArray.filter(e => e !== id)
+        this.checkboxesArray = this.checkboxesArray.
+          filter(e => e !== id)
       } else {
         this.checkboxesArray.push(id)
       }

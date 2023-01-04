@@ -4,9 +4,18 @@
 </script>
 
 <template>
-  <Left />
-  <Right />
+  <div><Left /></div>
+  <pre><Right /></pre>
 </template>
 
-<style scoped>
+<style>
+  div#app{
+    display: grid;
+    grid-template: auto / 15em auto;
+    overflow: auto;
+  }
+
+  pre{
+    white-space: pre-line;
+  }
 </style>
