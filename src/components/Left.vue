@@ -14,15 +14,12 @@
   <ul v-for="property of section.properties">
     <li><label><input type="checkbox" @change="store.onSelected(property.id, property.description)"><span> {{property.description}} </span></label></li></ul>
     <ul v-if="current.index > -1">
-    <li class="little-top-margin" v-for="context of store.sections[current.index].context">
-      <label ><input type="checkbox" @change="store.onSelected(context.id, context.description)"><span > {{context.description}} </span></label>
+    <li v-for="context of store.sections[current.index].context">
+      <label ><input type="radio" :name="section.sectionName" @change="store.onSelected(context.id, context.description)"><span > {{context.description}} </span></label>
     </li></ul>
   </details></li>
   </ul>
 </template>
 
 <style scoped>
-  .little-top-margin{
-    list-style-type: square;
-  }
 </style>

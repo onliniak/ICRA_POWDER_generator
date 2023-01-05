@@ -1,10 +1,11 @@
 <script setup>
-  import { ref } from 'vue'
+  import { ref, nextTick } from 'vue'
   import { useMainStore } from '@/stores/mainStore'
   const store = useMainStore()
 
   const hosts = ref("")
   const path = ref("")
+  let file = ref("")
 
   function copyPage() {
     store.drPage.push(document.getElementById("powder").textContent
@@ -28,12 +29,20 @@ store.drPage[page.dataset.index -1] = page.textContent
     page.dataset.index = index
   }
 
-  function previewFile() {
+  async function previewFile() {
     let txt = ''
+    if (store.drPage.length === 0) { store.drPage.
+      push(document.getElementById("powder").textContent)}
     txt = prefile
     store.drPage.forEach((data) => txt += data)
     txt += postfile
+    file.value = txt
+    await nextTick()
     document.getElementById("preview").textContent = txt
+  }
+
+  function encodeFile() {
+    return encodeURIComponent(file.value)
   }
   
   const intro = '<powder xmlns="http://www.w3.org/2007/05/powder#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:icra="http://www.icra.org/rdfs/vocabulary2008#">'
@@ -93,7 +102,7 @@ store.drPage[page.dataset.index -1] = page.textContent
     <button @click="deletePage()"  >Delete last page</button>
   <br /><br />
     <button @click="previewFile()">Preview file</button>
-    <button disabled>Save file</button>
+    <a @click="previewFile()" :href="'data:text/plain;charset=utf-8,' + encodeFile()" target="_blank" type="application/powder+xml" download="powder.xml">Down</a>
 </template>
 
 <style scoped>
