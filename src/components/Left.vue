@@ -12,7 +12,7 @@
   <ul v-for="(section, index) of store.sections" @click="current.index = index">
   <li><details><summary>{{ section.sectionName }}</summary>
   <ul v-for="property of section.properties">
-    <li><label><input type="checkbox" @change="store.onSelected(property.id)"><span> {{property.description}} </span></label></li>
+    <li><label><input type="checkbox" @change="store.onSelected(property.id, property.description)"><span> {{property.description}} </span></label></li>
   </ul></details></li>
   </ul>
   <div v-if="current.index > -1" v-for="context of store.sections[current.index].context">{{context.description}}</div>

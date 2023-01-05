@@ -4,6 +4,9 @@ export const useMainStore = defineStore('main', {
   state: () => {
     return {
       checkboxesArray: [],
+      checkboxesDescriptionArray: [],
+      drPage: [],
+      
       sections: [
         {sectionName: "Nudity",
         properties: [
@@ -25,12 +28,16 @@ export const useMainStore = defineStore('main', {
   //getters: {
   //},
   actions: {
-    onSelected(id) {
+    onSelected(id, d) {
       if (this.checkboxesArray.includes(id)) {
         this.checkboxesArray = this.checkboxesArray.
           filter(e => e !== id)
+        this.checkboxesDescriptionArray = this.
+          checkboxesDescriptionArray.
+          filter(e => e !== d)
       } else {
         this.checkboxesArray.push(id)
+        this.checkboxesDescriptionArray.push(d)
       }
     }
   },

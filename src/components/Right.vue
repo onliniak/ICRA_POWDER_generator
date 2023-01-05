@@ -5,10 +5,35 @@
 
   const hosts = ref("")
   const path = ref("")
-  const drPage = ref([])
 
   function copyPage() {
-    this.drPage.push(document.getElementById("powder").textContent.match(/<descriptorset>(.*)<\/descriptorset>/gm))
+    store.drPage.push(document.getElementById("powder").textContent
+      .match(/<dr>(.*)<\/dr>/gm))
+  }
+
+  function updatePage() {
+    let page = document.getElementById("preview")
+store.drPage[page.dataset.index -1] = page.textContent
+  }
+
+  function deletePage() {
+    // store.drPage.splice(
+    //   document.getElementById("powder").dataset.index, 1);
+    store.drPage.pop()
+  }
+
+  function restorePage(index) {
+    let page = document.getElementById("preview")
+    page.textContent = store.drPage[index -1]
+    page.dataset.index = index
+  }
+
+  function previewFile() {
+    let txt = ''
+    txt = prefile
+    store.drPage.forEach((data) => txt += data)
+    txt += postfile
+    document.getElementById("preview").textContent = txt
   }
   
   const intro = '<powder xmlns="http://www.w3.org/2007/05/powder#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:icra="http://www.icra.org/rdfs/vocabulary2008#">'
@@ -26,18 +51,22 @@
   const descriptorsetMiddleStart = "<icra:"
   const descriptorsetMiddleEnd = ">1</icra:"
   const descriptorsetEnd = "</descriptorset></dr>"
-  //const nextPage = ''
   const outro = '</ol></powder>'
+  const prefile  = `<powder xmlns="http://www.w3.org/2007/05/powder#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:icra="http://www.icra.org/rdfs/vocabulary2008#">
+  <attribution>
+<issuedby src="http://authority.example.org/company.rdf#me"/>
+<issued>${new Date().toISOString()}</issued>
+</attribution><ol>`
+  const postfile = '</ol></powder>'
 </script>
 
 <template>
-<!--   Tutaj b€dæ pryzwracane descriptorsetz
-       Pierwsya strona b€dyie mergni€ta y wsyzstkich stron
-       Układ niemieckiej maszynistki jest niewygodny-->
-  <button v-for="page in drPage.length" ></button>
+  <button v-for="(index, page) in store.drPage.length" @click="restorePage(index)"> {{ index }} </button>
   <br />
   <input v-model="hosts" placeholder ="hosts" />
   <input v-model="path" placeholder="/path" />
+  <br />
+  <details open><summary>Preview page</summary><div id="preview"></div></details>
       <br /><br /><br />
   <code class="language-xml" id="powder">
     {{ intro }}
@@ -52,14 +81,19 @@
     <span v-for="property of store.checkboxesArray"> 
       {{ descriptorsetMiddleStart }}{{ property }}{{ descriptorsetMiddleEnd }}{{ property }}>
     </span>
-    {{ descriptorsetEnd }}
     {{ displaytextStart }}
-<!--     <span v-for="property of store.checkboxesArray">{{ property }}</span> -->
+    <span v-for="property of store.checkboxesDescriptionArray">{{ property }}; </span>
     {{ displaytextEnd }}
+    {{ descriptorsetEnd }}
     {{ outro }}
   </code>
     <br /><br /><br />
-    <button @click="copyPage()" type="button">new Page</button>
+    <button @click="copyPage()" type="button">New page</button>
+    <button @click="updatePage()">Update current page</button>
+    <button @click="deletePage()"  >Delete last page</button>
+  <br /><br />
+    <button @click="previewFile()">Preview file</button>
+    <button disabled>Save file</button>
 </template>
 
 <style scoped>
