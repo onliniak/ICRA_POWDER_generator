@@ -14,7 +14,9 @@
 
   function updatePage() {
     let page = document.getElementById("preview")
-store.drPage[page.dataset.index -1] = page.textContent
+    let powder = document.getElementById("powder")
+store.drPage[page.dataset.index -1] = powder.textContent
+    page.textContent = store.drPage[page.dataset.index -1]
   }
 
   function deletePage() {
@@ -73,7 +75,7 @@ store.drPage[page.dataset.index -1] = page.textContent
   <button v-for="(index, page) in store.drPage.length" @click="restorePage(index)"> {{ index }} </button>
   <br />
   <input v-model="hosts" placeholder ="hosts" />
-  <input v-model="path" placeholder="/path" />
+  <input v-model="path" placeholder="path" />
   <br />
   <details open><summary>Preview page</summary><div id="preview"></div></details>
       <br /><br /><br />
@@ -84,7 +86,7 @@ store.drPage[page.dataset.index -1] = page.textContent
     {{ irisetStart }}
     {{ hosts }}
     {{ irisetMiddle }}
-    {{ path }}
+    /{{ path }}
     {{ irisetEnd }}
     {{ descriptorsetStart }}
     <span v-for="property of store.checkboxesArray"> 
