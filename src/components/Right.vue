@@ -102,7 +102,7 @@ store.drPage[page.dataset.index -1] = page.textContent
     <button @click="deletePage()"  >Delete last page</button>
   <br /><br />
     <button @click="previewFile()">Preview file</button>
-    <a @click="previewFile()" :href="'data:text/plain;charset=utf-8,' + encodeFile()" target="_blank" type="application/powder+xml" download="powder.xml">Down</a>
+    <a @click="previewFile()" :href="'data:text/plain;charset=utf-8,' + encodeFile()" target="_blank" type="application/powder+xml" download="powder.xml"><button>Download file</button></a>
 </template>
 
 <style scoped>
